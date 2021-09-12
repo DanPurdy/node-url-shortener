@@ -19,7 +19,7 @@ describe('convertBase36', () => {
     expect(output).toBe(chars[35]);
   });
 
-  it('should correctly convert 36^8 to a base36 format string of length 5', () => {
+  it('should correctly convert 36^8 to a base36 format string of length 8', () => {
     const exponent = 8;
     const number = 36 ** exponent - 1;
 
