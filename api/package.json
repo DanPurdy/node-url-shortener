@@ -20,12 +20,14 @@
   },
   "homepage": "https://github.com/DanPurdy/Primary-Bid-Challenge#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "helmet": "^4.6.0",
     "mongoose": "^6.0.5",
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.9.1",

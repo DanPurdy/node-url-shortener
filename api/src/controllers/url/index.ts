@@ -61,6 +61,8 @@ router.get(
  *
  * @apiDescription post a url to be shortened
  *
+ * @apiParam {string} url
+ *
  * @apiSuccess {string} code
  * @apiSuccess {string} longUrl
  * @apiSuccess {string} shortUrl
@@ -93,7 +95,10 @@ router.post('/', (req: Request<{}, {}, { url: string }>, res) => {
     }
 
     const counter = await CounterModel.findOne({});
-    const existingUrl = await UrlModel.findOne({ longUrl: url });
+    const existingUrl = await UrlModel.findOne(
+      { longUrl: url },
+      'longUrl, shortUrl',
+    );
 
     if (!existingUrl) {
       if (!counter?.count) {
@@ -105,18 +110,17 @@ router.post('/', (req: Request<{}, {}, { url: string }>, res) => {
         shortUrl: padString(convertBase36(counter.count), 8, '0'), // TODO move the character count to env vars
       });
 
-      await newUrl.save();
+      const { shortUrl, longUrl, _id } = await newUrl.save();
 
       return res.status(201).send({
-        code: 'OK',
-        longUrl: newUrl.longUrl,
-        shortUrl: `${DEFAULT_URL}${newUrl.shortUrl}`,
+        longUrl,
+        _id,
+        shortUrl: `${DEFAULT_URL}${shortUrl}`,
       });
     }
 
     res.status(200).send({
-      code: 'OK',
-      longUrl: existingUrl.longUrl,
+      ...existingUrl.toJSON(),
       shortUrl: `${DEFAULT_URL}${existingUrl.shortUrl}`,
     });
   });

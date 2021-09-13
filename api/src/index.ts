@@ -4,10 +4,12 @@ import mongoConnection from './connection';
 import UrlModel from './models/url.model';
 import CounterModel from './models/counter.model';
 import helmet from 'helmet';
+import cors from 'cors';
 
 const app = express();
 const PORT = 8080;
 
+app.use(cors());
 app.use(helmet());
 app.use(express.json());
 app.use(
@@ -18,7 +20,7 @@ app.use(
 
 app.get('/', (req, res) => res.status(200).send('Hello world'));
 
-app.use('/api/url', urlController);
+app.use('/api/urls', urlController);
 
 async function setupMongo(): Promise<void> {
   await mongoConnection();
