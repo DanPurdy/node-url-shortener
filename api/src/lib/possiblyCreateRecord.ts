@@ -31,7 +31,7 @@ const possiblyCreateRecord = async function (url: string): Promise<{
 
   const newUrl = new UrlModel({
     longUrl: url,
-    shortUrl: padString(convertBase36(counter.count), 8, '0'), // TODO move the character count to env vars
+    shortUrl: padString(convertBase36(counter.count), 8, '0'), // 8 characters set here for padding - in real life app this wouldn't be needed
   });
 
   const { shortUrl, longUrl, _id } = await newUrl.save();

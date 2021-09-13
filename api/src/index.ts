@@ -41,7 +41,7 @@ setupMongo()
 
       const counter = new CounterModel({
         _id: 'count',
-        count: 100003456,
+        count: 100003456, // aribitrary number to start from - just to make the urls look nicer technically we can go up to 36^8 but this gives us headroom!
       });
 
       await counter.save();

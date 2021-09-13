@@ -1,4 +1,4 @@
-// TODO update and move to env vars
+// TODO should be an env var
 const BASE_URL = 'http://localhost:4000/api';
 
 export default async function apiClient<T, R>(

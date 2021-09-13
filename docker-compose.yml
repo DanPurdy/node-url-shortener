@@ -1,5 +1,9 @@
 version: "2"
 services:
+  mongo-server:
+    image: mongo
+    ports:
+      - "27017:27017"
   api:
     build: ./api
     ports:
@@ -7,16 +11,19 @@ services:
     volumes:
       - ".:/app"
       - "/app/node_modules"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URL=mongodb://mongo-server:27017/short-urls
+      - REDIRECT_URL=https://pbid.io/
+      - COUNTER_STEP=1000
     depends_on:
       - mongo-server
-  mongo-server:
-    image: mongo
-    ports:
-      - "27017:27017"
   client:
     build: ./client
     ports:
       - "8080:8080"
+    environment:
+      - NODE_ENV=production
     volumes:
       - ".:/app"
       - "/app/node_modules"

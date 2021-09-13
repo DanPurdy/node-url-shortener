@@ -1,7 +1,9 @@
 import { Document, model, Schema } from 'mongoose';
 import CounterModel from './counter.model';
 
-export const COUNT_OFFSET = 1000;
+export const COUNT_OFFSET = process.env.COUNTER_STEP
+  ? Number(process.env.COUNTER_STEP)
+  : 1000; // exaggerated for local setup
 
 export interface IUrl extends Document {
   longUrl: string;
@@ -25,7 +27,6 @@ const urlSchema = new Schema<IUrl>(
 );
 
 urlSchema.pre('save', (next) => {
-  // TODO move count id name to env vars
   // NOTE: incrementing by 1000 here just to have a little more of a dramatic change in the generated URL's in the client - would usually increment by 1 in a real system
   CounterModel.findByIdAndUpdate(
     { _id: 'count' },

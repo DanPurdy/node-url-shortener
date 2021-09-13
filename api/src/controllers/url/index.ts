@@ -5,8 +5,7 @@ import UrlModel from '../../models/url.model';
 
 const router = express.Router();
 
-// TODO env var
-const DEFAULT_URL = 'https://pbid.io/';
+const DEFAULT_URL = process.env.REDIRECT_URL! || 'https://pbid.io/';
 
 /**
  * @api {get} /api/url GET /api/url
