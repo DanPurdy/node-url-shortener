@@ -1,5 +1,5 @@
 import CounterModel from '../models/counter.model';
-import UrlModel, { IUrl } from '../models/url.model';
+import UrlModel from '../models/url.model';
 import convertBase36 from './convertBase36';
 import padString from './padString';
 
@@ -11,7 +11,7 @@ const possiblyCreateRecord = async function (url: string): Promise<{
 }> {
   const existingUrl = await UrlModel.findOne(
     { longUrl: url },
-    'longUrl, shortUrl',
+    'longUrl shortUrl',
   );
 
   if (existingUrl) {

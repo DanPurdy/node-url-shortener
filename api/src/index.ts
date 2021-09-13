@@ -7,7 +7,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 
 const app = express();
-const PORT = 8080;
+const PORT = 4000;
 
 app.use(cors());
 app.use(helmet());
