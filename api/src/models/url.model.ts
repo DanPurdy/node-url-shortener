@@ -22,14 +22,11 @@ const urlSchema = new Schema<IUrl>(
   },
 );
 
-urlSchema.pre('save', function (next) {
-  const doc = this;
-
-  // TODO move count name to env vars
-  CounterModel.findByIdAndUpdate({ _id: 'count' }, { $inc: { count: 1 } })
+urlSchema.pre('save', (next) => {
+  // TODO move count id name to env vars
+  // NOTE: incrementing by 1000 here just to have a little more of a dramatic change in the generated URL's in the client - would usually increment by 1 in a real system
+  CounterModel.findByIdAndUpdate({ _id: 'count' }, { $inc: { count: 1000 } })
     .then((counter) => {
-      console.log(counter?.count);
-      // doc._id = counter?.count;
       next();
     })
     .catch((err) => {

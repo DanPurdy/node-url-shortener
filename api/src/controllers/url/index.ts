@@ -1,14 +1,9 @@
 import express, { Request, Response } from 'express';
-import * as core from 'express-serve-static-core';
 import validUrl from 'valid-url';
-import convertBase36 from '../../lib/convertBase36';
-import padString from '../../lib/padString';
-import CounterModel from '../../models/counter.model';
+import possiblyCreateRecord from '../../lib/possiblyCreateRecord';
 import UrlModel from '../../models/url.model';
 
 const router = express.Router();
-
-// TODO error handling
 
 // TODO env var
 const DEFAULT_URL = 'https://pbid.io/';
@@ -34,12 +29,9 @@ const DEFAULT_URL = 'https://pbid.io/';
  *      ]
  *    }
  */
-router.get(
-  '/',
-  (req: Request<core.ParamsDictionary, {}, {}, { limit: number }>, res) => {
-    Promise.resolve().then(async () => {
-      // const { limit } = req.query;
-
+router.get('/', (req: Request, res) => {
+  Promise.resolve()
+    .then(async () => {
       const docs = await UrlModel.find({}, 'longUrl shortUrl').sort({
         createdAt: -1,
       });
@@ -50,9 +42,9 @@ router.get(
           shortUrl: `${DEFAULT_URL}${doc.shortUrl}`,
         })),
       });
-    });
-  },
-);
+    })
+    .catch((err) => res.status(500).json({ error: err.message }));
+});
 
 /**
  * @api {post} /api/url POST /api/url
@@ -83,47 +75,36 @@ router.get(
  *   }
  */
 router.post('/', (req: Request<{}, {}, { url: string }>, res) => {
-  Promise.resolve().then(async () => {
-    const { url } = req.body;
+  Promise.resolve()
+    .then(async () => {
+      const { url } = req.body;
 
-    if (typeof url !== 'string' || !validUrl.isWebUri(url)) {
-      // TODO format as error codes
-      return res.status(422).send({
-        code: 'INVALID_URL',
-        message: 'The url was invalid',
-      });
-    }
-
-    const counter = await CounterModel.findOne({});
-    const existingUrl = await UrlModel.findOne(
-      { longUrl: url },
-      'longUrl, shortUrl',
-    );
-
-    if (!existingUrl) {
-      if (!counter?.count) {
-        throw new Error('missing count');
+      if (typeof url !== 'string' || !validUrl.isWebUri(url)) {
+        // TODO format as error codes
+        return res.status(422).send({
+          code: 'INVALID_URL',
+          message: 'The url was invalid',
+        });
       }
 
-      const newUrl = new UrlModel({
-        longUrl: url,
-        shortUrl: padString(convertBase36(counter.count), 8, '0'), // TODO move the character count to env vars
-      });
+      // The client shouldn't care that we already have the url in the system
+      // it should behave the same way to the user but just not duplicate the records
+      const { exists, longUrl, shortUrl, _id } = await possiblyCreateRecord(
+        url,
+      );
+      let statusCode = 201;
 
-      const { shortUrl, longUrl, _id } = await newUrl.save();
+      if (exists) {
+        statusCode = 200;
+      }
 
-      return res.status(201).send({
-        longUrl,
+      res.status(statusCode).send({
         _id,
+        longUrl,
         shortUrl: `${DEFAULT_URL}${shortUrl}`,
       });
-    }
-
-    res.status(200).send({
-      ...existingUrl.toJSON(),
-      shortUrl: `${DEFAULT_URL}${existingUrl.shortUrl}`,
-    });
-  });
+    })
+    .catch((err) => res.status(500).json({ error: err.message }));
 });
 
 export default router;
