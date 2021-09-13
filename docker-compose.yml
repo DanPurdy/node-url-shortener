@@ -4,9 +4,21 @@ services:
     build: ./api
     ports:
       - "4000:4000"
+    volumes:
+      - ".:/app"
+      - "/app/node_modules"
     depends_on:
       - mongo-server
   mongo-server:
     image: mongo
     ports:
       - "27017:27017"
+  client:
+    build: ./client
+    ports:
+      - "8080:8080"
+    volumes:
+      - ".:/app"
+      - "/app/node_modules"
+    depends_on:
+      - api
