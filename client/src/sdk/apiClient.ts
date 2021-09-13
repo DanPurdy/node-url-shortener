@@ -1,5 +1,5 @@
 // TODO update and move to env vars
-const BASE_URL = 'http://localhost:8080/api';
+const BASE_URL = 'http://localhost:4000/api';
 
 export default async function apiClient<T, R>(
   method = 'GET',

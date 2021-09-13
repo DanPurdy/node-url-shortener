@@ -11,9 +11,11 @@ interface IPostUrlResponseFormat {
   shortUrl: string;
 }
 
+export const METHOD = 'POST';
+
 export async function postUrl(url: string) {
   return await apiClient<IPostUrlRequestFormat, IPostUrlResponseFormat>(
-    'POST',
+    METHOD,
     ENDPOINT,
     {
       url,

@@ -12,7 +12,7 @@
         required
       />
       <v-button
-        class="btn btn--primary"
+        class="btn btn--primary js-submit-button"
         :disabled="disabled"
         :type="'submit'"
         >{{ disabled ? 'Saving..' : 'Submit' }}</v-button
