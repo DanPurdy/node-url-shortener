@@ -11,8 +11,8 @@ Mongo Express &amp; Vue URL shortener
 
 **NOTES**
 
-- Made the choice to reset the db on each startup - saves the bother of this demo of checking for existing counts etc when starting up again with a perhaps persistent mongoDb instance. Is called in the server index although this would NEVER be right in a production app.
-- The urls must include the protocol (http and https). http and https are treated as different url's - easy to change if that was required but figured it made sense to keep it this way.
+- Made the choice to reset the db on each startup - saves the bother of this demo of checking for existing counts etc when starting up again with a perhaps persistent mongoDb instance. This setup/teardown is called in the server index although this would NEVER be right in a production app with migrations etc.
+- The urls must include the protocol (http:// and https://). Http and https are treated as different url's - easy to change if that was required but figured it made sense to keep it this way as it matches with how tinyUrl do things.
 - Env vars are saved in the docker-compose.yml - This again would never be the case in production we would be providing env's to the build but for the sake of this challenge there are no sensitive variables to worry about.
 - Everything is vanilla css as requested although I made the assumption that including it in the style tags in vue components was still ok rather than in the main.css file.
 
