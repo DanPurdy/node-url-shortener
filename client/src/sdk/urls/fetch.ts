@@ -13,7 +13,7 @@ interface IFetchUrlsResponseFormat {
 
 export const METHOD = 'GET';
 
-export async function fetchUrls() {
+export async function fetchUrls(): Promise<IFetchUrlsResponseFormat> {
   return await apiClient<unknown, IFetchUrlsResponseFormat>(
     METHOD,
     ENDPOINT,

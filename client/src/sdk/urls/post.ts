@@ -13,7 +13,7 @@ interface IPostUrlResponseFormat {
 
 export const METHOD = 'POST';
 
-export async function postUrl(url: string) {
+export async function postUrl(url: string): Promise<IPostUrlResponseFormat> {
   return await apiClient<IPostUrlRequestFormat, IPostUrlResponseFormat>(
     METHOD,
     ENDPOINT,
