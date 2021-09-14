@@ -41,6 +41,20 @@ There are 3 parts to the development setup for now
 
 visit http://localhost:8080 in your browser
 
+## Tests
+
+### api
+
+- `$ cd api/`
+- `npm i`
+- `npm test`
+
+### client
+
+- `$ cd client/`
+- `npm i`
+- `npm run test:unit`
+
 ### Task
 
 All completed
